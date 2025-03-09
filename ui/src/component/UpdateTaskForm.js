@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import axios from "axios";
-import { API_URL } from "../utils";
+
+import axios from "axios";           //may switch to invoked lmabda
+import { API_URL } from "../utils";  //may switch to invoked lmabda
+
+// import { invokeLambda } from "../utils";  // updated function
 
 export const UpdateTaskForm = ({
   fetchTasks,
@@ -15,11 +18,17 @@ export const UpdateTaskForm = ({
 
   const handleUpdateTaskName = async () => {
     try {
-      await axios.put(API_URL, {
+      await axios.put(API_URL, {   //May be replaced with invokeLambda-------
         id,
         name: taskName,
         completed,
       });
+
+    //   await invokeLambda({
+    //     httpMethod: "PUT",
+    //     body: { id, name: taskName, completed },
+    //   });
+      
 
       await fetchTasks();  //updates the task data after change
 

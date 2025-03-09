@@ -4,8 +4,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import React, { useState } from "react";
 import { UpdateTaskForm } from "./UpdateTaskForm";
 import classnames from "classnames";
-import axios from "axios";
-import { API_URL } from "../utils";
+
+import axios from "axios";           //may switch to invoked lmabda
+import { API_URL } from "../utils";  //may switch to invoked lmabda
+
+// import { invokeLambda } from "../utils";  // updated function
 
 export const Task = ({ task, fetchTasks }) => {
   const { id, name, completed } = task;
@@ -20,19 +23,31 @@ export const Task = ({ task, fetchTasks }) => {
         name,
         completed: !isComplete,
       });
+
+    //   await invokeLambda({
+    //     httpMethod: "PUT",
+    //     body: { id, name, completed: !isComplete },
+    //   });
+
       setIsComplete((prev) => !prev);
     } catch (err) {
-      console.log(err);
+      console.log("Error updating task:", err);
     }
   };
 //Delete doesn't take in a body, just find task by appending id to task url
   const handleDeleteTask = async () => {
     try {
-      await axios.delete(`${API_URL}/${task.id}`);
+      await axios.delete(`${API_URL}/${task.id}`);   //May be replaced with invokeLambda-------
+
+    //   await invokeLambda({
+    //     httpMethod: "DELETE",
+    //     body: { id: task.id },
+    //   });
+      
 
       await fetchTasks();
     } catch (err) {
-      console.log(err);
+      console.log("Error deleting task:", err);
     }
   };
 
