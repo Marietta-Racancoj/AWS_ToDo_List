@@ -8,7 +8,7 @@ const port = 3001;
 
 app.use(express.json());
 
-if (process.env.DEVELOPMENT) {
+if (process.env.DEVELOPMENT) { //for cors running locally during development
   app.use(cors());
 }
 

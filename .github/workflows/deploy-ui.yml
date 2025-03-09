@@ -1,0 +1,134 @@
+# name: Deploy React UI to S3 + CloudFront
+
+# on:
+#   push:
+#     branches:
+#       - main # Runs on push to main branch
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v3
+
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+
+#       - name: Install Dependencies
+#         run: npm install
+#         working-directory: AWS_TODO_LIST/ui # Path to frontend folder
+
+#       - name: Build React App
+#         run: npm run build
+#         working-directory: AWS_TODO_LIST/ui
+
+#       - name: Deploy to S3
+#         run: aws s3 cp AWS_TODO_LIST/ui/build s3://your-ui-bucket-name/ --recursive #figure out what im naming the bucket
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1
+
+#       - name: Invalidate CloudFront Cache
+#         run: aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1
+
+# Go to GitHub Repo → Settings → Secrets and variables → Actions
+# Click New repository secret and add:
+# AWS_ACCESS_KEY_ID → Your AWS Access Key ID
+# AWS_SECRET_ACCESS_KEY → Your AWS Secret Key
+# YOUR_DISTRIBUTION_ID → Your CloudFront distribution ID
+#----------------------UPDATED TO INCLUDE API GATEWAY PIPLINE HANDELING
+
+# name: Deploy UI & API to AWS
+
+# on:
+#   push:
+#     branches:
+#       - main  # Runs when code is pushed to main branch
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v3
+
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+
+#       ## UI Deployment: Build and Upload React to S3
+#       - name: Install Dependencies
+#         run: npm install
+#         working-directory: AWS_TODO_LIST/ui  # Path to frontend folder
+
+#       - name: Build React App
+#         run: npm run build
+#         working-directory: AWS_TODO_LIST/ui
+
+#       - name: Deploy UI to S3
+#         run: aws s3 cp AWS_TODO_LIST/ui/build s3://your-ui-bucket-name/ --recursive
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1  # Change to your AWS region
+
+#       - name: Invalidate CloudFront Cache
+#         run: aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1  # Change to your AWS region
+
+#       ## API Deployment: Zip API, Upload to S3, and Deploy to Lambda
+#       - name: Zip API Code
+#         run: |
+#           cd AWS_TODO_LIST/api
+#           zip -r lambda-api.zip .
+
+#       - name: Upload API to S3
+#         run: aws s3 cp AWS_TODO_LIST/api/lambda-api.zip s3://your-api-bucket-name/
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1
+
+#       - name: Deploy API to Lambda
+#         run: |
+#           aws lambda update-function-code \
+#             --function-name your-lambda-function-name \
+#             --s3-bucket your-api-bucket-name \
+#             --s3-key lambda-api.zip
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1
+
+#       ## API Gateway Deployment: Update & Deploy API Gateway
+#       - name: Deploy API Gateway
+#         run: |
+#           aws apigateway create-deployment \
+#             --rest-api-id YOUR_API_ID \
+#             --stage-name prod
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: us-west-1
+
+# Go to GitHub → Your Repository → Settings.
+# Click Secrets and variables → Actions.
+# Click New repository secret and add:
+# AWS_ACCESS_KEY_ID → Your AWS Access Key ID.
+# AWS_SECRET_ACCESS_KEY → Your AWS Secret Key.
+# YOUR_DISTRIBUTION_ID → CloudFront Distribution ID.
+# YOUR_API_ID → Your API Gateway ID (found in API Gateway console).

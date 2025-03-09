@@ -20,6 +20,7 @@ const darkTheme = createTheme({
 export default function App() {
   const [tasks, setTasks] = useState([]);
 
+  //Below may be replaced with invokeLambda-------
   const fetchTasks = async () => {
     try {
       const { data } = await axios.get(API_URL);
@@ -29,6 +30,20 @@ export default function App() {
       console.log(err);
     }
   };
+  //Above may be replaced with invokeLambda-------
+
+  // const fetchTasks = async () => {
+  //   try {
+  //     const response = await invokeLambda({
+  //       httpMethod: "GET",
+  //     });
+  
+  //     setTasks(response);
+  //   } catch (err) {
+  //     console.log("Error fetching tasks:", err);
+  //   }
+  // };
+  
 
   useEffect(() => {  
     fetchTasks();
