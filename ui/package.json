@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
+    "aws-amplify": "^6.13.4",
     "axios": "^1.8.1",
     "classnames": "^2.5.1",
     "react": "^19.0.0",
@@ -19,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "npm start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
