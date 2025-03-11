@@ -3,25 +3,25 @@ import TextField from "@mui/material/TextField";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-// import axios from "axios";           //may switch to invoked lmabda
-// import { API_URL } from "../utils";  //may switch to invoked lmabda
+import axios from "axios";           //may switch to invoked lmabda
+import { API_URL } from "../utils";  //may switch to invoked lmabda
 
-import { invokeLambda } from "../utils";  // updated function instead of axios
+// import { invokeLambda } from "../utils";  // updated function instead of axios
 
 export const AddTaskForm = ({ fetchTasks }) => {  
   const [newTask, setNewTask] = useState("");
 
   const addNewTask = async () => {
     try {
-      // await axios.post(API_URL, {   //May be replaced with invokeLambda-------
-      //   name: newTask,
-      //   completed: false,
+      await axios.post(API_URL, {   //May be replaced with invokeLambda-------
+        name: newTask,
+        completed: false,
 
       //OR
 
-      await invokeLambda({     //May use Axios and API Gateway instead of invokeLambda
-        httpMethod: "POST",
-        body: { name: newTask, completed: false },
+      // await invokeLambda({     //May use Axios and API Gateway instead of invokeLambda
+      //   httpMethod: "POST",
+      //   body: { name: newTask, completed: false },
       
       });
       

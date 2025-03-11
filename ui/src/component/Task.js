@@ -5,10 +5,10 @@ import React, { useState } from "react";
 import { UpdateTaskForm } from "./UpdateTaskForm";
 import classnames from "classnames";
 
-// import axios from "axios";           //may switch to invoked lmabda
-// import { API_URL } from "../utils";  //may switch to invoked lmabda
+import axios from "axios";           //may switch to invoked lmabda
+import { API_URL } from "../utils";  //may switch to invoked lmabda
 
-import { invokeLambda } from "../utils";  // updated function instead of axios
+//import { invokeLambda } from "../utils";  // updated function instead of axios
 
 export const Task = ({ task, fetchTasks }) => {
   const { id, name, completed } = task;
@@ -18,16 +18,16 @@ export const Task = ({ task, fetchTasks }) => {
 //   Handels when checkbox is checked and unchecked identifying task by name and id
   const handleUpdateTaskCompletion = async () => {
     try {
-      // await axios.put(API_URL, {  //may be replaced with invokeLambda-------
-      //   id,
-      //   name,
-      //   completed: !isComplete,
+      await axios.put(API_URL, {  //may be replaced with invokeLambda-------
+        id,
+        name,
+        completed: !isComplete,
      
     //OR
 
-      await invokeLambda({          //may be replaced with axios and Api Gateway-------
-        httpMethod: "PUT",
-        body: { id, name, completed: !isComplete },
+    //   await invokeLambda({          //may be replaced with axios and Api Gateway-------
+    //     httpMethod: "PUT",
+    //     body: { id, name, completed: !isComplete },
     });
 
       setIsComplete((prev) => !prev);
@@ -39,14 +39,14 @@ export const Task = ({ task, fetchTasks }) => {
   const handleDeleteTask = async () => {
     try {
 
-      // await axios.delete(`${API_URL}/${task.id}`);   //May be replaced with invokeLambda-------
+      await axios.delete(`${API_URL}/${task.id}`);   //May be replaced with invokeLambda-------
 
     //OR
 
-      await invokeLambda({     //may be replaced with axios and Api Gateway-------
-        httpMethod: "DELETE",
-        body: { id: task.id },
-      });
+      // await invokeLambda({     //may be replaced with axios and Api Gateway-------
+      //   httpMethod: "DELETE",
+      //   body: { id: task.id },
+      // });
       
 
       await fetchTasks();
