@@ -4,10 +4,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { AddTaskForm } from "./component/AddTaskForm";
 import { Task } from "./component/Task";
 
-import axios from "axios";           //may switch to invoked lmabda
-import { API_URL } from "./utils";  //may switch to invoked lmabda
+// import axios from "axios";           //may switch to invoked lmabda
+// import { API_URL } from "./utils";  //may switch to invoked lmabda
 
-// import { invokeLambda } from "../utils";  // updated function
+import { invokeLambda } from "../utils";  // updated function
 
 
 
@@ -20,29 +20,29 @@ const darkTheme = createTheme({
 export default function App() {
   const [tasks, setTasks] = useState([]);
 
-  //Below may be replaced with invokeLambda-------
-  const fetchTasks = async () => {
-    try {
-      const { data } = await axios.get(API_URL);
-
-      setTasks(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  //Above may be replaced with invokeLambda-------
-
+  // //Below may be replaced with invokeLambda-------
   // const fetchTasks = async () => {
   //   try {
-  //     const response = await invokeLambda({
-  //       httpMethod: "GET",
-  //     });
-  
-  //     setTasks(response);
+  //     const { data } = await axios.get(API_URL);
+
+  //     setTasks(data);
   //   } catch (err) {
-  //     console.log("Error fetching tasks:", err);
+  //     console.log(err);
   //   }
   // };
+  // //OR-------
+
+  const fetchTasks = async () => {
+    try {
+      const response = await invokeLambda({
+        httpMethod: "GET",
+      });
+  
+      setTasks(response);
+    } catch (err) {
+      console.log("Error fetching tasks:", err);
+    }
+  };
   
 
   useEffect(() => {  
